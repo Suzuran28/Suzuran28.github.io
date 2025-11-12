@@ -27,7 +27,7 @@
 <meta property="og:description" content="1888. 使二进制字符串字符交替的最少反转次数 给你一个二进制字符串 s 。你可以按任意顺序执行以下两种操作任意次：  类型 1 ：删除 字符串 s 的第一个字符并将它 添加 到字符串结尾。 类型 2 ：选择 字符串 s 中任意一个字符并将该字符 反转 ，也就是如果值为 &#39;0&#39; ，则反转得到 &#39;1&#39; ，反之亦然。  请你返回使 s 变成 交替 字符串的前提下， 类型 2 的 最少 操">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-12T08:39:22.000Z">
-<meta property="article:modified_time" content="2025-11-12T08:56:07.585Z">
+<meta property="article:modified_time" content="2025-11-12T13:07:04.195Z">
 <meta property="article:author" content="Suzuran">
 <meta property="article:tag" content="滑动窗口">
 <meta property="article:tag" content="C++">
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k 字
+          2.1k 字
         
       </span>
     
@@ -261,7 +261,7 @@
         
         
         
-          17 分钟
+          18 分钟
         
       </span>
     
@@ -394,7 +394,17 @@
 <p>得到转换后位置：<code>[0, 1, 2, 3]</code>，可以发现，得到了前 <span class="math inline"><em>j</em></span> 个 1 要删除的数</p></li>
 </ul>
 <p>对于 <span class="math inline"><em>l</em><em>e</em><em>f</em><em>t</em></span> 处和 <span class="math inline"><em>r</em><em>i</em><em>g</em><em>h</em><em>t</em></span> 处的数字 <span class="math inline"><em>x</em></span>， 所需要删除的数量变为 <span class="math inline"><em>p</em><em>o</em><em>s</em>[<em>r</em><em>i</em><em>g</em><em>h</em><em>t</em>] − <em>p</em><em>o</em><em>s</em>[<em>l</em><em>e</em><em>f</em><em>t</em>]</span></p>
-<p>如果 <span class="math inline"><em>p</em><em>o</em><em>s</em>[<em>r</em><em>i</em><em>g</em><em>h</em><em>t</em>] − <em>p</em><em>o</em><em>s</em>[<em>l</em><em>e</em><em>f</em><em>t</em>] &gt; <em>k</em></span> 则缩小窗口，最长的答案应为 <span class="math inline"><em>m</em><em>a</em><em>x</em>(<em>a</em><em>n</em><em>s</em>, <em>r</em><em>i</em><em>g</em><em>h</em><em>t</em> − <em>l</em><em>e</em><em>f</em><em>t</em> + 1)</span></p></li>
+<p>如果 <span class="math inline"><em>p</em><em>o</em><em>s</em>[<em>r</em><em>i</em><em>g</em><em>h</em><em>t</em>] − <em>p</em><em>o</em><em>s</em>[<em>l</em><em>e</em><em>f</em><em>t</em>] &gt; <em>k</em></span> 则缩小窗口，最长的答案应为 <span class="math inline"><em>m</em><em>a</em><em>x</em>(<em>a</em><em>n</em><em>s</em>, <em>r</em><em>i</em><em>g</em><em>h</em><em>t</em> − <em>l</em><em>e</em><em>f</em><em>t</em> + 1)</span></p>
+<hr />
+<h1 id="统计好子数组的数目"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-the-number-of-good-subarrays/">2537. 统计好子数组的数目</a></h1>
+<p>给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code> ，请你返回 <code>nums</code> 中 <strong>好</strong> 子数组的数目。</p>
+<p>一个子数组 <code>arr</code> 如果有 <strong>至少</strong> <code>k</code> 对下标 <code>(i, j)</code> 满足 <code>i &lt; j</code> 且 <code>arr[i] == arr[j]</code> ，那么称它是一个 <strong>好</strong> 子数组。</p>
+<p><strong>子数组</strong> 是原数组中一段连续 <strong>非空</strong> 的元素序列。</p>
+<ul>
+<li><p>核心思想，统计窗口内每个 <span class="math inline"><em>x</em></span> 出现的个数，记为 <span class="math inline"><em>c</em><em>n</em><em>t</em>[<em>x</em>]</span></p>
+<p>考虑维护窗口，当进入的数为 <span class="math inline"><em>x</em></span> 时，窗口内便会有 <span class="math inline"><em>c</em><em>n</em><em>t</em>[<em>x</em>]</span> 个数与之相匹配，同理，当 <span class="math inline"><em>n</em><em>u</em><em>m</em><em>s</em>[<em>l</em><em>e</em><em>f</em><em>t</em>]</span> 离开窗口时，窗口内便有 <span class="math inline"><em>c</em><em>n</em><em>t</em>[<em>x</em>] − 1</span> 个数失去匹配</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> left = <span class="hljs-number">0</span>, sum = <span class="hljs-number">0</span>;<br>        unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; cnt;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;x : nums)&#123;<br>            cnt[x]++;<br>            sum += cnt[x] - <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">while</span> (sum &gt;= k)&#123;<br>                sum -= cnt[nums[left++]] - <span class="hljs-number">1</span>;<br>            &#125;<br>            ans += left;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br></code></pre></td></tr></table></figure></li>
+</ul></li>
 </ul>
 
                 
