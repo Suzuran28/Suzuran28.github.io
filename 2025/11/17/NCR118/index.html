@@ -19,23 +19,23 @@
   <meta name="author" content="Suzuran">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Candy Tribulation (abc432 c) 你拥有无限供应的两种糖果：小糖果和大糖果。一颗小糖果的重量是X克，一颗大糖果的重量是Y克，且大糖果比小糖果重（即X &lt; Y）。 有N个孩子，编号从1到N。 你决定分发糖果，需满足以下条件：  对于 i&#x3D;1,…,N，孩子i总共收到恰好Ai颗两种类型的糖果。 分发给这N个孩子的糖果总重量都相等。  请判断是否存在满足条件的">
+    <meta name="description" content="牛客周赛 Round 118 E&#x2F;F E-小红玩树 由于本题是一颗无根树而非图，故点 α 到 β 的路径是唯一的 同理，对于小红来说，去往每个叶子节点的路径也是唯一的，小紫如果要赶上小红，那她的路线也是唯一的，所以仅需判断在同一终点的路径下，小紫是否能追上小红即可。设小红到每个点的最短距离为 d1i， 小紫到每个点的最短距离为 d2i， 考虑到小紫能移动 1 至 2 次且小红有多个路径可选，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="abc432_C">
-<meta property="og:url" content="http://example.com/2025/11/15/3/index.html">
+<meta property="og:title" content="牛客周赛 Round 118 E&#x2F;F">
+<meta property="og:url" content="http://example.com/2025/11/17/NCR118/index.html">
 <meta property="og:site_name" content="一般路过的沃尔珀的Blog">
-<meta property="og:description" content="Candy Tribulation (abc432 c) 你拥有无限供应的两种糖果：小糖果和大糖果。一颗小糖果的重量是X克，一颗大糖果的重量是Y克，且大糖果比小糖果重（即X &lt; Y）。 有N个孩子，编号从1到N。 你决定分发糖果，需满足以下条件：  对于 i&#x3D;1,…,N，孩子i总共收到恰好Ai颗两种类型的糖果。 分发给这N个孩子的糖果总重量都相等。  请判断是否存在满足条件的">
+<meta property="og:description" content="牛客周赛 Round 118 E&#x2F;F E-小红玩树 由于本题是一颗无根树而非图，故点 α 到 β 的路径是唯一的 同理，对于小红来说，去往每个叶子节点的路径也是唯一的，小紫如果要赶上小红，那她的路线也是唯一的，所以仅需判断在同一终点的路径下，小紫是否能追上小红即可。设小红到每个点的最短距离为 d1i， 小紫到每个点的最短距离为 d2i， 考虑到小紫能移动 1 至 2 次且小红有多个路径可选，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-11-15T14:40:17.000Z">
-<meta property="article:modified_time" content="2025-11-15T15:03:43.848Z">
+<meta property="article:published_time" content="2025-11-17T09:36:10.000Z">
+<meta property="article:modified_time" content="2025-11-17T09:37:28.473Z">
 <meta property="article:author" content="Suzuran">
 <meta property="article:tag" content="C++">
-<meta property="article:tag" content="math">
+<meta property="article:tag" content="newcode">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>abc432_C - 一般路过的沃尔珀的Blog</title>
+  <title>牛客周赛 Round 118 E/F - 一般路过的沃尔珀的Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -225,7 +225,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="abc432_C"></span>
+            <span id="subtitle" data-typed-text="牛客周赛 Round 118 E/F"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-11-15 22:40" pubdate>
-          2025年11月15日 晚上
+        <time datetime="2025-11-17 17:36" pubdate>
+          2025年11月17日 下午
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          745 字
+          671 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          7 分钟
+          6 分钟
         
       </span>
     
@@ -296,42 +296,15 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">abc432_C</h1>
+            <h1 id="seo-header">牛客周赛 Round 118 E/F</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="candy-tribulation-abc432-c"><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/abc432/tasks/abc432_c">Candy Tribulation (abc432 c)</a></h1>
-<p>你拥有无限供应的两种糖果：小糖果和大糖果。一颗小糖果的重量是X克，一颗大糖果的重量是Y克，且大糖果比小糖果重（即X &lt; Y）。</p>
-<p>有N个孩子，编号从1到N。</p>
-<p>你决定分发糖果，需满足以下条件：</p>
-<ul>
-<li>对于 i=1,…,N，孩子i总共收到恰好Ai颗两种类型的糖果。</li>
-<li>分发给这N个孩子的糖果总重量都相等。</li>
-</ul>
-<p>请判断是否存在满足条件的分发方法。如果存在，请找出分发出的大糖果数量的最大可能值。</p>
-<p>约束条件：</p>
-<ul>
-<li>2 ≤ <span class="math inline"><em>N</em></span> ≤ 2×10^5</li>
-<li>1 ≤ <span class="math inline"><em>A</em><sub><em>i</em></sub></span> ≤ 10^9</li>
-<li>1 ≤ <span class="math inline"><em>X</em></span> &lt; <span class="math inline"><em>Y</em></span> ≤ 10^9</li>
-<li>所有输入值均为整数。</li>
-</ul>
-<hr />
-<p>对于每个孩子 <span class="math inline"><em>i</em></span> ：</p>
-<ul>
-<li>设得到 <span class="math inline"><em>S</em><sub><em>i</em></sub></span> 颗小糖果， <span class="math inline"><em>L</em><sub><em>i</em></sub></span> 颗大糖果，总重量为 <span class="math inline"><em>W</em></span></li>
-<li>始终满足：<span class="math inline"><em>S</em><sub><em>i</em></sub> + <em>L</em><sub><em>i</em></sub> = <em>A</em><sub><em>i</em></sub></span> 和 <span class="math inline"><em>W</em> = <em>X</em> ⋅ <em>S</em><sub><em>i</em></sub> + <em>Y</em> ⋅ <em>L</em><sub><em>i</em></sub></span></li>
-</ul>
-<p><span class="math display">$$
-\begin{aligned}
-S_i &amp;= A_i - L_i \\
-W &amp;= X\cdot (A_i - L_i) + Y\cdot L_i    \\
-W &amp;= (Y - X)\cdot L_i + X\cdot A_i \\
-L_i &amp;= \frac{W-X\cdot A_i}{Y-X}
-\end{aligned}
-$$</span></p>
-<p>由于 <span class="math inline"><em>L</em><sub><em>i</em></sub></span> 必须是整数，所以 <span class="math inline">(<em>W</em> − <em>X</em> ⋅ <em>A</em><sub><em>i</em></sub>)</span> 必须能被 <span class="math inline">(<em>Y</em> − <em>X</em>)</span>整除，这同时也意味着对于任意孩子，都必须满足 <span class="math inline"><em>X</em> ⋅ <em>A</em><sub><em>i</em></sub></span> 对 <span class="math inline">(<em>Y</em> − <em>X</em>)</span> 取模必须相同</p>
+                <h1 id="牛客周赛-round-118-ef">牛客周赛 Round 118 E/F</h1>
+<h2 id="e-小红玩树"><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/121952/E">E-小红玩树</a></h2>
+<p><strong>由于本题是一颗无根树而非图，故点 <span class="math inline"><em>α</em></span> 到 <span class="math inline"><em>β</em></span> 的路径是唯一的</strong></p>
+<p>同理，对于小红来说，去往每个叶子节点的路径也是唯一的，小紫如果要赶上小红，那她的路线也是唯一的，所以仅需判断在同一终点的路径下，小紫是否能追上小红即可。设小红到每个点的最短距离为 <span class="math inline"><em>d</em>1<sub><em>i</em></sub></span>， 小紫到每个点的最短距离为 <span class="math inline"><em>d</em>2<sub><em>i</em></sub></span>， 考虑到小紫能移动 <code>1</code> 至 <code>2</code> 次且小红有多个路径可选，所以只要存在 <span class="math inline"><em>d</em>1<sub><em>i</em></sub> * 2 ≤ <em>d</em>2<sub><em>i</em></sub></span> 时，小红获胜</p>
 
     <div class="fold">
       <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-65ad56e5" role="button" aria-expanded="false" aria-controls="collapse-65ad56e5">
@@ -339,17 +312,21 @@ $$</span></p>
       </div>
       <div class="fold-collapse collapse" id="collapse-65ad56e5">
         <div class="fold-content">
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">long</span> <span class="hljs-type">long</span> bias = Y - X;<br><span class="hljs-type">long</span> <span class="hljs-type">long</span> R = (X % bias * (arr[<span class="hljs-number">0</span>] % bias)) % bias;<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; N; i++)&#123;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> cur = (X % bias * (arr[i] % bias)) % bias;<br>    <span class="hljs-keyword">if</span> (cur != R)&#123;<br>        cout &lt;&lt; <span class="hljs-number">-1</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> t;<br>    std::cin &gt;&gt; t;<br>    <span class="hljs-keyword">while</span> (t--)&#123;<br>        <span class="hljs-type">int</span> n, a, b;<br>        std::cin &gt;&gt; n &gt;&gt; a &gt;&gt; b;<br>        std::vector&lt;std::vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">chart</span>(n + <span class="hljs-number">1</span>);<br>        <span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d1</span><span class="hljs-params">(n + <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>)</span>, <span class="hljs-title">d2</span><span class="hljs-params">(n + <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>)</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> u, v, i = <span class="hljs-number">1</span>; i &lt; n; i++)&#123;<br>            std::cin &gt;&gt; u &gt;&gt; v;<br>            chart[u].<span class="hljs-built_in">emplace_back</span>(v);<br>            chart[v].<span class="hljs-built_in">emplace_back</span>(u);<br>        &#125;<br>        <span class="hljs-keyword">auto</span> dijk = [&amp;](<span class="hljs-type">int</span> u, std::vector&lt;<span class="hljs-type">int</span>&gt;&amp; dis) -&gt; <span class="hljs-type">void</span>&#123;<br>            std::queue&lt;std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;&gt; q;<br>            q.<span class="hljs-built_in">push</span>(&#123;u, <span class="hljs-number">0</span>&#125;);<br>            dis[u] = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) &#123;<br>                <span class="hljs-keyword">auto</span> &amp;[u, dist] = q.<span class="hljs-built_in">front</span>();<br>                q.<span class="hljs-built_in">pop</span>();<br>                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;v : chart[u])&#123;<br>                    <span class="hljs-keyword">if</span> (dis[v] != <span class="hljs-number">-1</span>) <span class="hljs-keyword">continue</span>;<br>                    dis[v] = dist + <span class="hljs-number">1</span>;<br>                    q.<span class="hljs-built_in">push</span>(&#123;v, dis[v]&#125;);<br>                &#125;<br>            &#125;<br>        &#125;;<br>        <span class="hljs-built_in">dijk</span>(a, d1);<br>        <span class="hljs-built_in">dijk</span>(b, d2);<br>        <span class="hljs-type">bool</span> flag = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)&#123;<br>            <span class="hljs-keyword">if</span> (chart[i].<span class="hljs-built_in">size</span>() == <span class="hljs-number">1</span>)&#123;<br>                <span class="hljs-keyword">if</span> (d2[i] &gt;= d1[i] * <span class="hljs-number">2</span>)&#123;<br>                    flag = <span class="hljs-number">1</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (flag) std::cout &lt;&lt; <span class="hljs-string">&quot;red\n&quot;</span>;<br>        <span class="hljs-keyword">else</span> std::cout &lt;&lt; <span class="hljs-string">&quot;purple\n&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
         </div>
       </div>
     </div>
-<p>由于 <span class="math inline"><em>L</em><sub><em>i</em></sub></span> 必须是非负整数且不超过 <span class="math inline"><em>A</em><sub><em>i</em></sub></span>，于是有以下约束： <span class="math display">$$
-\begin{aligned}
-L_i \ge 0 &amp;\Rightarrow W-X\cdot A_i \ge 0 \Rightarrow W\ge X\cdot A_i
-\\ L_i \le A_i &amp;\Rightarrow W-X\cdot A_i \le A_i\cdot (Y-X)
-\\ &amp;\Rightarrow W \le A_i\cdot Y
-\end{aligned}
-$$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a</em><em>x</em>(<em>A</em><sub><em>i</em></sub> ⋅ <em>X</em>)</span> 和 <span class="math inline"><em>m</em><em>i</em><em>n</em>(<em>A</em><sub><em>i</em></sub> ⋅ <em>Y</em>)</span>，并判断是否存在合法的 <span class="math inline"><em>W</em></span></p>
+<h2 id="f-小红拿石子2.0"><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/121952/F">F-小红拿石子2.0</a></h2>
+<p>设一轮指小红小紫各完成一次操作(<span class="math inline"><em>p</em></span>)，那么第 <span class="math inline"><em>n</em></span> 轮时，所有 <span class="math inline"><em>a</em><sub><em>i</em></sub> ≤ <em>n</em> − 1</span> 的堆都会被清空，越大的数越能留到最后，所以我们仅考虑最大堆，设最大的数为 <span class="math inline"><em>k</em></span>，共有 <span class="math inline"><em>m</em></span> 堆</p>
+<ul>
+<li><p>当 <span class="math inline"><em>k</em> &gt; <em>m</em></span> 时：</p>
+<p>​ <span class="math inline">$[\underbrace{k,k,\cdots,k}_m]\rightarrow_{p1} [\underbrace{k-1,k-1,\cdots,k-1}_{m-1}]\rightarrow_{p2}\cdots\rightarrow_{pk-1}[\underbrace{1,1,\cdots,1}_{m-k+1}]\Rightarrow purple\ win$</span></p></li>
+<li><p>当 <span class="math inline"><em>k</em> = <em>m</em></span> 时:</p>
+<p>​ <span class="math inline">$[\underbrace{k,k,\cdots,k}_m]\rightarrow_{p1} [\underbrace{k-1,k-1,\cdots,k-1}_{m-1}]\rightarrow_{p2}\cdots\rightarrow_{pk-1}[1]\Rightarrow red\ win$</span></p></li>
+<li><p>当 <span class="math inline"><em>k</em> &lt; <em>m</em></span> 时：</p>
+<p>​ <span class="math inline">$[\underbrace{k,k,\cdots,k}_m]\rightarrow_{p1} [\underbrace{k-1,k-1,\cdots,k-1}_{m-1}]\rightarrow_{p2}\cdots\rightarrow_{pm-1}[k-m+1]\Rightarrow red\ win$</span></p></li>
+</ul>
+<p>综上，如果 <span class="math inline"><em>k</em> ≤ <em>m</em></span>，那么小红一定赢，反之，小紫一定赢</p>
 
     <div class="fold">
       <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-28ab9646" role="button" aria-expanded="false" aria-controls="collapse-28ab9646">
@@ -357,32 +334,7 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
       </div>
       <div class="fold-collapse collapse" id="collapse-28ab9646">
         <div class="fold-content">
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">long</span> <span class="hljs-type">long</span> minW = <span class="hljs-number">0</span>, maxW = <span class="hljs-number">2e18</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++)&#123;<br>    minW = <span class="hljs-built_in">max</span>(minW, arr[i] * X)<br>    maxW = <span class="hljs-built_in">min</span>(maxW, arr[i] * Y);<br>&#125;<br><span class="hljs-keyword">if</span> (minW &gt; maxW)&#123;<br>    cout &lt;&lt; <span class="hljs-number">-1</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-        </div>
-      </div>
-    </div>
-<p>接着要找到最大且合法的 <span class="math inline"><em>W</em></span> ，由 <span class="math inline">(<em>W</em> − <em>X</em> ⋅ <em>A</em><sub><em>i</em></sub>)</span> 必须能被 <span class="math inline">(<em>Y</em> − <em>X</em>)</span>整除可知， <span class="math inline"><em>W</em> ≡ <em>R</em>(<em>m</em><em>o</em><em>d</em> <em>B</em><em>i</em><em>a</em><em>s</em>)</span>，其中 <span class="math inline"><em>R</em></span> 是 <span class="math inline"><em>X</em> ⋅ <em>A</em><sub><em>i</em></sub></span> 对 <span class="math inline">(<em>Y</em> − <em>X</em>)</span> 取模，所以 <span class="math inline"><em>W</em></span> 可以表示为 <span class="math inline"><em>R</em> + <em>k</em> ⋅ <em>B</em><em>i</em><em>a</em><em>s</em></span> 同时满足 <span class="math inline"><em>R</em> + <em>k</em> ⋅ <em>B</em><em>i</em><em>a</em><em>s</em> ≤ <em>m</em><em>a</em><em>x</em><em>W</em></span>，解出 <span class="math inline">$k\le \lfloor \frac{maxW-R}{Bias} \rfloor$</span>， 这样就能得到需要的 <span class="math inline"><em>W</em></span></p>
-
-    <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-e064c6af" role="button" aria-expanded="false" aria-controls="collapse-e064c6af">
-        <div class="fold-arrow">▶</div>code
-      </div>
-      <div class="fold-collapse collapse" id="collapse-e064c6af">
-        <div class="fold-content">
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (maxW - R &gt;= <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> k = (maxW - R) / Bias;<br>    W = R + k * bias;<br>&#125;<br></code></pre></td></tr></table></figure>
-        </div>
-      </div>
-    </div>
-<p>最后计算答案即可</p>
-<p>完整代码：</p>
-
-    <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5b75660a" role="button" aria-expanded="false" aria-controls="collapse-5b75660a">
-        <div class="fold-arrow">▶</div>code
-      </div>
-      <div class="fold-collapse collapse" id="collapse-5b75660a">
-        <div class="fold-content">
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ios&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    std::ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>    std::cin.<span class="hljs-built_in">tie</span>(<span class="hljs-literal">nullptr</span>);<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> N, X, Y;<br>    std::cin &gt;&gt; N &gt;&gt; X &gt;&gt; Y;<br>    <span class="hljs-function">std::vector&lt;<span class="hljs-type">long</span> <span class="hljs-type">long</span>&gt; <span class="hljs-title">arr</span><span class="hljs-params">(N)</span></span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++)<br>        std::cin &gt;&gt; arr[i];<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> bias = Y - X;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> R = (X % bias * (arr[<span class="hljs-number">0</span>] % bias)) % bias;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; N; i++)&#123;<br>        <span class="hljs-type">long</span> <span class="hljs-type">long</span> cur = (X % bias * (arr[i] % bias)) % bias;<br>        <span class="hljs-keyword">if</span> (cur != R)&#123;<br>            std::cout &lt;&lt; <span class="hljs-string">&quot;-1&quot;</span>;<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> minW = <span class="hljs-number">0</span>, maxW = <span class="hljs-number">2e18</span>, W;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++)&#123;<br>        minW = std::<span class="hljs-built_in">max</span>(minW, arr[i] * X);<br>        maxW = std::<span class="hljs-built_in">min</span>(maxW, arr[i] * Y);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (minW &gt; maxW)&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;-1&quot;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (maxW - R &gt;= <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-type">long</span> <span class="hljs-type">long</span> k = (maxW - R) / bias;<br>        W = R + k * bias;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (W &lt; minW) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;-1&quot;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++)<br>        sum += (W - X * arr[i]) / bias;<br>    std::cout &lt;&lt; sum;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> t;<br>    std::cin &gt;&gt; t;<br>    <span class="hljs-keyword">while</span> (t--)&#123;<br>        <span class="hljs-type">int</span> n, maxn = <span class="hljs-number">-0x3f3f3f3f</span>;<br>        std::cin &gt;&gt; n;<br>        std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; cnt;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x, i = <span class="hljs-number">0</span>; i &lt; n; i++)&#123;<br>            std::cin &gt;&gt; x;<br>            maxn = std::<span class="hljs-built_in">max</span>(maxn, x);<br>            cnt[x]++;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (maxn &gt;= cnt[maxn]) std::cout &lt;&lt; <span class="hljs-string">&quot;red\n&quot;</span>;<br>        <span class="hljs-keyword">else</span> std::cout &lt;&lt; <span class="hljs-string">&quot;purple\n&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
         </div>
       </div>
     </div>
@@ -400,7 +352,7 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
       
         <a href="/tags/C/" class="print-no-link">#C++</a>
       
-        <a href="/tags/math/" class="print-no-link">#math</a>
+        <a href="/tags/newcode/" class="print-no-link">#newcode</a>
       
     </div>
   
@@ -412,8 +364,8 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>abc432_C</div>
-      <div>http://example.com/2025/11/15/3/</div>
+      <div>牛客周赛 Round 118 E/F</div>
+      <div>http://example.com/2025/11/17/NCR118/</div>
     </div>
     <div class="license-meta">
       
@@ -425,7 +377,7 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年11月15日</div>
+          <div>2025年11月17日</div>
         </div>
       
       
@@ -457,9 +409,9 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/11/17/NCR118/" title="牛客周赛 Round 118 E/F">
+                      <a href="/2025/11/22/ml/" title="机器学习">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">牛客周赛 Round 118 E/F</span>
+                        <span class="hidden-mobile">机器学习</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -467,8 +419,8 @@ $$</span> 所以在程序中要记录 <span class="math inline"><em>m</em><em>a<
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/11/13/2/" title="滑动窗口题型总结">
-                        <span class="hidden-mobile">滑动窗口题型总结</span>
+                      <a href="/2025/11/15/3/" title="abc432_C">
+                        <span class="hidden-mobile">abc432_C</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
