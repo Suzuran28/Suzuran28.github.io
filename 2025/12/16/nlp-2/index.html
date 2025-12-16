@@ -1,0 +1,973 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/suzuran_icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Suzuran">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Transformer Transformer模型的作用  基于seq2seq架构的transformer模型可以完成NLP领域研究的典型任务，如机器翻译，文本生成等。同时又可以构建预训练语言模型，用于不同任务的迁移学习 在接下来的架构分析中，我们将假设使用Transformer模型架构处理从一种语言文本到另一种语 言文本的翻译工作，因此很多命名方式遵循NLP中的规则。比如:Embeddd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp (下)">
+<meta property="og:url" content="http://example.com/2025/12/16/nlp-2/index.html">
+<meta property="og:site_name" content="一般路过的沃尔珀的Blog">
+<meta property="og:description" content="Transformer Transformer模型的作用  基于seq2seq架构的transformer模型可以完成NLP领域研究的典型任务，如机器翻译，文本生成等。同时又可以构建预训练语言模型，用于不同任务的迁移学习 在接下来的架构分析中，我们将假设使用Transformer模型架构处理从一种语言文本到另一种语 言文本的翻译工作，因此很多命名方式遵循NLP中的规则。比如:Embeddd">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/NLP/transformer.png">
+<meta property="og:image" content="http://example.com/img/NLP/transformer_encoder.png">
+<meta property="og:image" content="http://example.com/img/NLP/transformer_decoder.png">
+<meta property="og:image" content="http://example.com/img/NLP/multi_attn.png">
+<meta property="og:image" content="http://example.com/img/NLP/bert.png">
+<meta property="og:image" content="http://example.com/img/NLP/bert-embedding.png">
+<meta property="og:image" content="http://example.com/img/NLP/bert-pre.png">
+<meta property="article:published_time" content="2025-12-16T12:30:10.000Z">
+<meta property="article:modified_time" content="2025-12-16T12:34:10.585Z">
+<meta property="article:author" content="Suzuran">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="nlp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/NLP/transformer.png">
+  
+  
+  
+  <title>nlp (下) - 一般路过的沃尔珀的Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":85,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Suzuran&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-friends"></i>
+                <span>友链</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://www.cnblogs.com/quchen-blog" target="_self">
+                    
+                    <span>Quchen</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://redstone6835.github.io/" target="_self">
+                    
+                    <span>Redstone6835</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://qcn3ep.github.io/" target="_self">
+                    
+                    <span>qcn3ep</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://blog.feynmach.com" target="_self">
+                    
+                    <span>Positronium</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nlp (下)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-16 20:30" pubdate>
+          2025年12月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">nlp (下)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="transformer">Transformer</h1>
+<h2 id="transformer模型的作用">Transformer模型的作用</h2>
+<ul>
+<li>基于seq2seq架构的transformer模型可以完成NLP领域研究的典型任务，如机器翻译，文本生成等。同时又可以构建预训练语言模型，用于不同任务的迁移学习</li>
+<li>在接下来的架构分析中，我们将假设使用Transformer模型架构处理从一种语言文本到另一种语 言文本的翻译工作，因此很多命名方式遵循NLP中的规则。比如:Embeddding层将称作文本嵌入 层，Embedding层产生的张量称为词嵌入张量，它的最后一维将称作词向量等</li>
+</ul>
+<h2 id="架构">架构</h2>
+<figure>
+<img src="/img/NLP/transformer.png" srcset="/img/loading.gif" lazyload alt="transformer" /><figcaption aria-hidden="true">transformer</figcaption>
+</figure>
+<ul>
+<li><p><strong>输入部分</strong></p>
+<ul>
+<li>源文本嵌入层及其位置编码器</li>
+<li>目标文本嵌入层及其位置编码器</li>
+</ul></li>
+<li><p><strong>输出部分</strong></p>
+<ul>
+<li>线性层</li>
+<li>softmax层</li>
+</ul></li>
+<li><p><strong>编码器部分</strong></p>
+<ul>
+<li><p>由N个编码器层堆叠而成</p></li>
+<li><p>每个编码器层由两个子层连接结构组成</p></li>
+<li><p>第一个子层连接结构包括一个<strong>多头自注意力子层</strong>和规范化层(无量纲化)以及一个残差连接</p></li>
+<li><p>第二个子层连接结构包括一个<strong>前馈全连接子层</strong>和规范化层以及一个残差连接</p>
+<figure>
+<img src="/img/NLP/transformer_encoder.png" srcset="/img/loading.gif" lazyload alt="transformer_encoder" /><figcaption aria-hidden="true">transformer_encoder</figcaption>
+</figure></li>
+</ul></li>
+<li><p><strong>解码器部分</strong></p>
+<ul>
+<li><p>由N个编码器层堆叠而成</p></li>
+<li><p>每个编码器层由三个子层连接结构组成</p></li>
+<li><p>第一个子层连接结构包括一个<strong>带掩码的多头自注意力子层</strong>和规范化层以及一个残差连接</p></li>
+<li><p>第一个子层连接结构包括一个<strong>多头注意力子层</strong>和规范化层以及一个残差连接</p>
+<blockquote>
+<p>注：多头注意力层≠多头自注意力层(Q = K = V)</p>
+</blockquote></li>
+<li><p>第三个子层连接结构包括一个<strong>前馈全连接子层</strong>和规范化层以及一个残差连接</p></li>
+</ul>
+<figure>
+<img src="/img/NLP/transformer_decoder.png" srcset="/img/loading.gif" lazyload alt="transformer_decoder" /><figcaption aria-hidden="true">transformer_decoder</figcaption>
+</figure></li>
+</ul>
+<h2 id="输入部分">输入部分</h2>
+<ul>
+<li><p>Embedding 层</p></li>
+<li><p>位置编码器</p>
+<p>​ 作用：因为在Transformer的编码器结构中，并没有针对词汇位置信息的处理，因此需要Embedding层后加入位置编码器，将词汇位置不同可能会产生不同语义的信息加入到词嵌入张量中，以弥补位置信 息的缺失。</p>
+<p>​ <strong>三角函数位置编码</strong>： <span class="math display">$$
+\begin{align}
+PE_{(pos,2i)}&amp;=\sin(\frac{pos}{10000\frac{2i}{d_{model}}}) \\
+PE_{(pos,2i+1)}&amp;=\cos(\frac{pos}{10000\frac{2i}{d_{model}}})
+\end{align}
+$$</span></p>
+<blockquote>
+<p><span class="math inline"><em>d</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub></span> 为 embedding 中的维度参数</p>
+</blockquote>
+<p>​ 正弦和余弦函数的周期性使得位置编码能够捕获序列中相对位置的变化。通过不同频率的组合，模型可以轻松学习到序列中词语的相对顺序。此外，正余弦函数的对称性也使得编码在高维空间中具有良好的分布特性</p></li>
+</ul>
+<hr />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-keyword">import</span> math<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Embedding</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, vocab_size, embed_dim</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.embed_dim = embed_dim<br>        <span class="hljs-variable language_">self</span>.embed = nn.Embedding(vocab_size, embed_dim)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-comment"># ! sqrt -&gt; 1. 使其符合正态分布 2. 增强 embedding 的影响</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.embed(x) * math.sqrt(<span class="hljs-variable language_">self</span>.embed_dim)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_embedding</span>(<span class="hljs-params">vocab_size= <span class="hljs-number">10</span>, embed_dim= <span class="hljs-number">512</span></span>):<br>    embed = Embedding(vocab_size, embed_dim)<br>    x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>]])<br>    result = embed(x)<br>    <span class="hljs-built_in">print</span>(result.shape)<br>    <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PositionEncoding</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, embed_dim, dropout= <span class="hljs-number">0.1</span>, max_len= <span class="hljs-number">60</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-comment"># 参数 max_len 用来控制 token 的数量</span><br>        <span class="hljs-variable language_">self</span>.dropout = nn.Dropout(dropout)<br>        <span class="hljs-comment"># 定义位置编码矩阵</span><br>        pe = torch.zeros(max_len, embed_dim)<br>        <span class="hljs-comment"># 定义位置-列矩阵</span><br>        position = torch.arange(<span class="hljs-number">0</span>, max_len).unsqueeze(<span class="hljs-number">1</span>)<br>        <span class="hljs-comment"># 定义变化矩阵</span><br>        div_term = torch.exp(torch.arange(<span class="hljs-number">0</span>, embed_dim, <span class="hljs-number">2</span>) * (-math.log(<span class="hljs-number">10000.0</span>) / embed_dim))<br>        matmulrs = position * div_term<br>        pe[:, <span class="hljs-number">0</span>::<span class="hljs-number">2</span>] = torch.sin(matmulrs)<br>        pe[:, <span class="hljs-number">1</span>::<span class="hljs-number">2</span>] = torch.cos(matmulrs)<br>        pe = pe.unsqueeze(<span class="hljs-number">0</span>)<br>        <br>        <span class="hljs-comment"># * 把pe位置编码矩阵 注册成模型的持久缓冲区buffer 模型保存时pe位置编码矩阵会一起保存</span><br>        <span class="hljs-comment"># buffer: 对模型效果有帮助，但不是模型结构中的参数或超参数，不参与模型训练</span><br>        <span class="hljs-variable language_">self</span>.register_buffer(<span class="hljs-string">&#x27;pe&#x27;</span>, pe)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-comment"># ! x 为 embedding 矩阵</span><br>        x = x + <span class="hljs-variable language_">self</span>.pe[:, :x.shape[<span class="hljs-number">1</span>]]<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.dropout(x)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_position_encoding</span>(<span class="hljs-params">vocab_size= <span class="hljs-number">10</span>, embed_dim= <span class="hljs-number">512</span></span>):<br>    embed = Embedding(vocab_size, embed_dim)<br>    position = PositionEncoding(embed_dim)<br>    x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>]])<br>    result = position(embed(x))<br>    <span class="hljs-built_in">print</span>(result.shape)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># test_embedding()</span><br>    <span class="hljs-comment"># test_position_encoding()</span><br>    <span class="hljs-keyword">pass</span><br></code></pre></td></tr></table></figure>
+<hr />
+<h2 id="编码器">编码器</h2>
+<h3 id="掩码张量">掩码张量</h3>
+<p>掩代表遮掩，码就是我们张量中的数值，它的尺寸不定，里面一般只有1和0的元素，代表位置被遮掩或者不被遮掩，至于是0位置被遮掩还是1位置被遮掩可以自定义，因此它的作用就是让另外一个张量中的一些数值被遮掩，也可以说被替换，它的表现形式是一个张量</p>
+<p>在transformer中，掩码张量的主要作用在应用attention时，有一些生成的attention张量中的值计算有可能已知了未来信息而得到的，未来信息被看到是因为训练时会把整个输出结果都一次性进行Embedding，但是理论上解码器的的输出却不是一次就能产生最终结果的，而是一次次通过上一次结果综合得出的，因此，未来的信息可能被提前利用。所以，我们要进行遮掩</p>
+<h3 id="多头注意力机制">多头注意力机制</h3>
+<p>计算公式： <span class="math display">$$
+Attention(Q,K,V)=Softmax(\frac{Q\cdot K^T}{\sqrt{d_k}})\cdot V
+$$</span> <span class="math inline">$\sqrt{d_k}$</span> 的作用：<strong>控制点积结果的方差，避免梯度消失问题，从而稳定训练过程</strong></p>
+<figure>
+<img src="/img/NLP/multi_attn.png" srcset="/img/loading.gif" lazyload alt="multi_attn" /><figcaption aria-hidden="true">multi_attn</figcaption>
+</figure>
+<p>这种结构设计能让每个注意力机制去优化每个词汇的不同特征部分，从而均衡同一种注意力机制可能产生的偏差，让词义拥有来自更多元的表达，实验表明可以从而提升模型效果</p>
+<h3 id="编码器的具体实现">编码器的具体实现</h3>
+<p>流程：<strong>输入</strong> -&gt; <strong>编码器 { 多个编码器层堆叠 [ 子层连接层1 (MultiHeadAttention -&gt; Add &amp; Norm) -&gt; 子层连接层2 (Feed Foward -&gt; Add &amp; Norm) ] }</strong> -&gt; <strong>中间语料c</strong></p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-keyword">import</span> torch.nn.functional <span class="hljs-keyword">as</span> F<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> copy<br><br><span class="hljs-comment"># * 输入部分</span><br><span class="hljs-comment"># ? 词嵌入</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Embed</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, vocab_size, d_k</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.d_k = d_k<br>        <span class="hljs-variable language_">self</span>.embed = nn.Embedding(vocab_size, d_k)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.embed(x) * math.sqrt(<span class="hljs-variable language_">self</span>.d_k)<br><br><span class="hljs-comment"># ? 位置编码</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PositionalEncoding</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, dropout= <span class="hljs-number">0.1</span>,max_len= <span class="hljs-number">60</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.dropout = nn.Dropout(dropout)<br>        pe = torch.zeros(max_len, d_k)<br>        position = torch.arange(<span class="hljs-number">0</span>, max_len, dtype=torch.<span class="hljs-built_in">float</span>).unsqueeze(<span class="hljs-number">1</span>)<br>        div_term = torch.exp(torch.arange(<span class="hljs-number">0</span>, d_k, <span class="hljs-number">2</span>).<span class="hljs-built_in">float</span>() * (-math.log(<span class="hljs-number">10000.0</span>) / d_k))<br>        mulars = position * div_term<br>        pe[:, <span class="hljs-number">0</span>::<span class="hljs-number">2</span>] = torch.sin(mulars)<br>        pe[:, <span class="hljs-number">1</span>::<span class="hljs-number">2</span>] = torch.cos(mulars)<br>        pe = pe.unsqueeze(<span class="hljs-number">0</span>)<br>        <span class="hljs-variable language_">self</span>.register_buffer(<span class="hljs-string">&#x27;pe&#x27;</span>, pe)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.dropout(x + <span class="hljs-variable language_">self</span>.pe[:, :x.shape[<span class="hljs-number">1</span>]])<br><br><span class="hljs-comment"># * 模型部分</span><br><span class="hljs-comment"># ? 注意力计算</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Attention</span>(<span class="hljs-params">query, key, value, mask=<span class="hljs-literal">None</span>, dropout=<span class="hljs-literal">None</span></span>):<br>    d_k = query.size(-<span class="hljs-number">1</span>)<br>    scores = query @ key.transpose(-<span class="hljs-number">2</span>, -<span class="hljs-number">1</span>) / np.sqrt(d_k)<br>    <span class="hljs-keyword">if</span> mask <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        scores.masked_fill_(mask == <span class="hljs-number">0</span>, -<span class="hljs-number">1e9</span>)<br>    p_attn = F.softmax(scores, dim=-<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">if</span> dropout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        p_attn = dropout(p_attn)<br>    <span class="hljs-keyword">return</span> p_attn @ value<br><br><span class="hljs-comment"># ? 克隆模型</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Clone</span>(<span class="hljs-params">model, N</span>):<br>    <span class="hljs-keyword">return</span> nn.ModuleList([copy.deepcopy(model) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(N)])<br><br><span class="hljs-comment"># ? 多头注意力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MultiHeadAttention</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, head, d_k, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.head = head<br>        <span class="hljs-variable language_">self</span>.d_k = d_k // head<br>        <span class="hljs-variable language_">self</span>.dropout = nn.Dropout(dropout)<br>        <span class="hljs-variable language_">self</span>.linear = Clone(nn.Linear(d_k, d_k), <span class="hljs-number">4</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, query, key, value, mask=<span class="hljs-literal">None</span></span>):<br>        <span class="hljs-keyword">if</span> mask <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            mask = mask.unsqueeze(<span class="hljs-number">1</span>)<br>        batch_size = query.size(<span class="hljs-number">0</span>)<br>        query, key, value = [l(x).view(batch_size, -<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.head, <span class="hljs-variable language_">self</span>.d_k).transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>                             <span class="hljs-keyword">for</span> l, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(<span class="hljs-variable language_">self</span>.linear, (query, key, value))]<br>        result = Attention(query, key, value, mask, <span class="hljs-variable language_">self</span>.dropout)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.linear[-<span class="hljs-number">1</span>](result.transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>).contiguous().view(batch_size, -<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.d_k * <span class="hljs-variable language_">self</span>.head))<br><br><span class="hljs-comment"># ? 前馈全连接</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Feed_forward</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, d_ff, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.linear = nn.Sequential(<br>            nn.Linear(d_k, d_ff),<br>            nn.ReLU(),<br>            nn.Linear(d_ff, d_k),<br>            nn.Dropout(dropout)<br>        )<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.linear(x)<br><br><span class="hljs-comment"># ? 规范化层</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LayerNorm</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, features, eps= <span class="hljs-number">1e-6</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.a2 = nn.Parameter(torch.ones(features))<br>        <span class="hljs-variable language_">self</span>.b2 = nn.Parameter(torch.zeros(features))<br>        <span class="hljs-variable language_">self</span>.eps = eps<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        mean = x.mean(-<span class="hljs-number">1</span>, keepdim=<span class="hljs-literal">True</span>)<br>        std = x.std(-<span class="hljs-number">1</span>, keepdim=<span class="hljs-literal">True</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.a2 * (x - mean) / (std + <span class="hljs-variable language_">self</span>.eps) + <span class="hljs-variable language_">self</span>.b2<br><br><span class="hljs-comment"># ? 子层连接层</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SublayerConnection</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.norm = LayerNorm(d_k)<br>        <span class="hljs-variable language_">self</span>.dropout = nn.Dropout(dropout)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, sublayer</span>):<br>        <span class="hljs-keyword">return</span> x + <span class="hljs-variable language_">self</span>.dropout(sublayer(<span class="hljs-variable language_">self</span>.norm(x)))<br><br><span class="hljs-comment"># ? 编码器层</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">EncoderLayer</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.d_k = d_k<br>        <span class="hljs-variable language_">self</span>.attn = MultiHeadAttention(<span class="hljs-number">8</span>, d_k, dropout)<br>        <span class="hljs-variable language_">self</span>.norm = LayerNorm(d_k)<br>        <span class="hljs-variable language_">self</span>.ff = Feed_forward(d_k, <span class="hljs-number">2048</span>, dropout)<br>        <span class="hljs-variable language_">self</span>.sublayer = Clone(SublayerConnection(d_k, dropout), <span class="hljs-number">2</span>)<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, mask</span>):<br>        x = <span class="hljs-variable language_">self</span>.sublayer[<span class="hljs-number">0</span>](x, <span class="hljs-keyword">lambda</span> x: <span class="hljs-variable language_">self</span>.attn(x, x, x, mask))<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.sublayer[<span class="hljs-number">1</span>](x, <span class="hljs-variable language_">self</span>.ff)<br><br><span class="hljs-comment"># ? 编码器</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Encoder</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, layer, N</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.layers = Clone(layer, N)<br>        <span class="hljs-variable language_">self</span>.norm = LayerNorm(layer.d_k)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, mask</span>):<br>        <span class="hljs-keyword">for</span> layer <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.layers:<br>            x = layer(x, mask)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.norm(x)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_encoder</span>():<br>    N, d_k = <span class="hljs-number">6</span>, <span class="hljs-number">512</span><br>    x = torch.randn(<span class="hljs-number">10</span>, <span class="hljs-number">8</span>, d_k)<br>    mask = torch.ones(<span class="hljs-number">8</span>, <span class="hljs-number">8</span>)<br>    <span class="hljs-keyword">try</span>:<br>        encoder = Encoder(EncoderLayer(d_k), N)<br>        <span class="hljs-built_in">print</span>(encoder(x, mask).shape)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(e)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    test_encoder()<br></code></pre></td></tr></table></figure>
+<h2 id="解码器">解码器</h2>
+<p>解码器中的各个部分与编码器相同，可以直接基于此来构建解码器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DecoderLayer</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, head= <span class="hljs-number">8</span>, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.d_k = d_k<br>        <span class="hljs-variable language_">self</span>.self_attn = MultiHeadAttention(head, d_k, dropout)<br>        <span class="hljs-variable language_">self</span>.norm = LayerNorm(d_k)<br>        <span class="hljs-variable language_">self</span>.enc_dec_attn = MultiHeadAttention(head, d_k, dropout)<br>        <span class="hljs-variable language_">self</span>.ff = Feed_forward(d_k, <span class="hljs-number">2048</span>, dropout)<br>        <span class="hljs-variable language_">self</span>.sublayer = Clone(SublayerConnection(d_k, dropout), <span class="hljs-number">3</span>)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, c, source_mask, target_mask</span>):<br>        x = <span class="hljs-variable language_">self</span>.sublayer[<span class="hljs-number">0</span>](x, <span class="hljs-keyword">lambda</span> x: <span class="hljs-variable language_">self</span>.self_attn(x, x, x, target_mask))<br>        x = <span class="hljs-variable language_">self</span>.sublayer[<span class="hljs-number">1</span>](x, <span class="hljs-keyword">lambda</span> x: <span class="hljs-variable language_">self</span>.enc_dec_attn(x, c, c, source_mask))<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.sublayer[<span class="hljs-number">2</span>](x, <span class="hljs-variable language_">self</span>.ff)<br><br><span class="hljs-comment"># ? 解码器</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Decoder</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, layer, N</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.layers = Clone(layer, N)<br>        <span class="hljs-variable language_">self</span>.norm = LayerNorm(layer.d_k)<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, c, source_mask, target_mask</span>):<br>        <span class="hljs-keyword">for</span> layer <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.layers:<br>            x = layer(x, c, source_mask, target_mask)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.norm(x)<br></code></pre></td></tr></table></figure>
+<h2 id="输出部分">输出部分</h2>
+<p>可以不使用 softmax，搭配 CrossEntropyLoss 使用，如果使用，请搭配 NLLloss 使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Generator</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, d_k, vocab_size</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.linear = nn.Linear(d_k, vocab_size)<br>        <span class="hljs-variable language_">self</span>.softmax = nn.LogSoftmax(dim=-<span class="hljs-number">1</span>)<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.softmax(<span class="hljs-variable language_">self</span>.linear(x))<br></code></pre></td></tr></table></figure>
+<h2 id="封装为transformer">封装为transformer</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Transformer</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, vocab_size, d_k, N, head= <span class="hljs-number">8</span>, ff_dim= <span class="hljs-number">2048</span>, max_len= <span class="hljs-number">60</span>, dropout= <span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-variable language_">self</span>.encoder = Encoder(EncoderLayer(d_k, head, ff_dim, dropout), N)<br>        <span class="hljs-variable language_">self</span>.decoder = Decoder(DecoderLayer(d_k, head, ff_dim, dropout), N)<br>        <span class="hljs-variable language_">self</span>.generator = Generator(d_k, vocab_size)<br>        <span class="hljs-variable language_">self</span>.predone = nn.Sequential(<br>            Embed(vocab_size, d_k),<br>            PositionalEncoding(d_k, dropout, max_len)<br>        )<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, source, target, mask, source_mask, target_mask</span>):<br>        x = <span class="hljs-variable language_">self</span>.predone(source)<br>        y = <span class="hljs-variable language_">self</span>.predone(target)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.generator(<span class="hljs-variable language_">self</span>.decoder(y, <span class="hljs-variable language_">self</span>.encoder(x, mask), source_mask, target_mask))<br></code></pre></td></tr></table></figure>
+<h1 id="fasttext">Fasttext</h1>
+<p>作用：</p>
+<ul>
+<li>进行文本分类</li>
+<li>训练词向量</li>
+</ul>
+<p>文本分类的种类：</p>
+<ul>
+<li>二分类：文本被分类两个类别中，往往这两个类别是对立面，比如：判断一句评论是好评还是差评</li>
+<li>单标签多分类：文本被分入到多个类别中，且每条文本只能属于某一个类别（即被打上某一个标签）比如：输入一个人名，判断它是来自哪个国家的人名。</li>
+<li>多标签多分类：文本被分人到多个类别中，但每条文本可以属于多个类别（即被打上多个标签）比如：输入一段描述，判断可能是和哪些兴趣爱好有关，一段描述中可能即讨论了美食，又讨论了游戏爱好</li>
+</ul>
+<h3 id="模型架构">模型架构</h3>
+<ul>
+<li><p>Fasttext 模型架构和 Word2Vec 中的 CBOW 模型很类似，不同在于 Fasttext 预测标签，而 CBOW 预测中间值</p></li>
+<li><p>Fasttext 的模型分为三层架构：</p>
+<ul>
+<li>输入层：对文档 Embedding 后的向量，包含 n-gram 特征</li>
+<li>隐藏层：对输入数据的求和平均</li>
+<li>输出层：是对应文本的 Lable</li>
+</ul>
+<p>![fasttextfasttext.png)</p></li>
+<li><p>文本分类的过程：</p>
+<ul>
+<li>第一步：获取数据</li>
+<li>第二步：训练集和测试集的划分</li>
+<li>第三步：训练模型</li>
+<li>第四步：使用模型进行预测并评估</li>
+<li>第五步：模型调优</li>
+<li>第六步：模型保存与重加载</li>
+</ul></li>
+</ul>
+<h1 id="迁移学习">迁移学习</h1>
+<ul>
+<li><p>预训练模型</p>
+<p>​ 一般情况下预训练模型都是大型模型，具备复杂的网络结构，众多的参数量，以及在足够大的数据集下进行训练而产生的模型。在NLP领域，预训练模型往往是语言模型。因为语言模型的训练是无监督的，可以获得大规模语料，同时语言模型又是许多典型NLP任务的基础，如机器翻译，文本生成，阅读理解等，常见的预训l练模型有BERT，GPT，roBERTa，transformer-XL等</p></li>
+<li><p>微调</p>
+<p>​ 根据给定的预训练模型，改变它的部分参数或者为其新增部分输出结构后，通过在小部分数据集上训练，来使整个模型更好的适应特定任务</p></li>
+<li><p>两种迁移方式</p>
+<ul>
+<li>直接使用预训练模型进行相同任务的处理，不需要调整参数或模型结构，这些模型开箱即用。但是这种情况一般只适用于普适任务，如：fasttest工具包中预训练的词向量模型。另外，很多预训练模型开发者为了达到开箱即用的效果，将模型结构分各个部分保存为不同的预训练模型，提供对应的加载方法来完成特定目标</li>
+<li>更加主流的迁移学习方式是发挥预训练模型特征抽象的能力，然后再通过微调的方式，通过训练更新小部分参数以此来适应不同的任务。这种迁移方式需要提供小部分的标注数据来进行监督学习</li>
+</ul></li>
+</ul>
+<p>基于 <code>bert-base-chinese</code> 的迁移学习案例 (中文分类任务)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-keyword">from</span> torch.optim <span class="hljs-keyword">import</span> AdamW<br><span class="hljs-keyword">from</span> datasets <span class="hljs-keyword">import</span> load_dataset<br><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> BertTokenizer, BertModel<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> DataLoader<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm<br><br>device = torch.device(<span class="hljs-string">&quot;cuda&quot;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;cpu&quot;</span>)<br><br>tokenizer = BertTokenizer.from_pretrained(<span class="hljs-string">&#x27;bert-base-chinese&#x27;</span>)<br>model = BertModel.from_pretrained(<span class="hljs-string">&#x27;bert-base-chinese&#x27;</span>)<br>model = model.to(device)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_data</span>():<br>    <span class="hljs-comment"># * 训练集</span><br>    train_dataset = load_dataset(<span class="hljs-string">&#x27;csv&#x27;</span>, data_files= <span class="hljs-string">&#x27;./data/train.csv&#x27;</span>, split= <span class="hljs-string">&#x27;train&#x27;</span>)<br>    <span class="hljs-comment"># * 测试集</span><br>    test_dataset = load_dataset(<span class="hljs-string">&#x27;csv&#x27;</span>, data_files= <span class="hljs-string">&#x27;./data/test.csv&#x27;</span>, split= <span class="hljs-string">&#x27;train&#x27;</span>)<br>    <span class="hljs-comment"># * 验证集</span><br>    valid_dataset = load_dataset(<span class="hljs-string">&#x27;csv&#x27;</span>, data_files= <span class="hljs-string">&#x27;./data/valid.csv&#x27;</span>, split= <span class="hljs-string">&#x27;train&#x27;</span>)<br><br>    <span class="hljs-keyword">return</span> train_dataset, test_dataset, valid_dataset<br>    <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">collate_fn</span>(<span class="hljs-params">data</span>):<br>    sentences = [i[<span class="hljs-string">&#x27;text&#x27;</span>] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> data]<br>    labels = [i[<span class="hljs-string">&#x27;label&#x27;</span>] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> data]<br>    <br>    data = tokenizer.batch_encode_plus(<br>        sentences,<br>        max_length= <span class="hljs-number">512</span>,<br>        padding= <span class="hljs-string">&#x27;max_length&#x27;</span>,<br>        truncation= <span class="hljs-literal">True</span>,<br>        return_tensors= <span class="hljs-string">&#x27;pt&#x27;</span>,<br>    )<br>    <br>    input_ids = data[<span class="hljs-string">&#x27;input_ids&#x27;</span>]<br>    token_type_ids = data[<span class="hljs-string">&#x27;token_type_ids&#x27;</span>]<br>    attention_mask = data[<span class="hljs-string">&#x27;attention_mask&#x27;</span>]<br>    labels = torch.tensor(labels, dtype= torch.long)<br>    <span class="hljs-keyword">return</span> input_ids, token_type_ids, attention_mask, labels<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_dataloader</span>():<br>    train_dataset, test_dataset, valid_dataset = read_data()<br>    train_dataloader = DataLoader(<br>        train_dataset,<br>        batch_size= <span class="hljs-number">8</span>,<br>        collate_fn= collate_fn,<br>        drop_last= <span class="hljs-literal">True</span>,<br>        shuffle= <span class="hljs-literal">True</span>,<br>    )<br>    test_dataloader = DataLoader(<br>        test_dataset,<br>        batch_size= <span class="hljs-number">8</span>,<br>        collate_fn= collate_fn,<br>        drop_last= <span class="hljs-literal">True</span>,<br>        shuffle= <span class="hljs-literal">True</span>,<br>    )<br>    valid_dataloader = DataLoader(<br>        valid_dataset,<br>        batch_size= <span class="hljs-number">8</span>,<br>        collate_fn= collate_fn,<br>        drop_last= <span class="hljs-literal">True</span>,<br>        shuffle= <span class="hljs-literal">True</span>,<br>    )<br>    <br>    <span class="hljs-keyword">return</span> train_dataloader, test_dataloader, valid_dataloader<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyModel</span>(torch.nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-comment"># ! 二分类</span><br>        <span class="hljs-variable language_">self</span>.fc = torch.nn.Linear(<span class="hljs-number">768</span>, <span class="hljs-number">2</span>)<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, input_ids, token_type_ids, attention_mask</span>):<br>        <span class="hljs-keyword">with</span> torch.no_grad():<br>            outputs = model(<br>                input_ids= input_ids,<br>                token_type_ids= token_type_ids,<br>                attention_mask= attention_mask,<br>            )<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.fc(outputs[<span class="hljs-string">&#x27;pooler_output&#x27;</span>])<br>    <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_model</span>(<span class="hljs-params">train_loader</span>):<br>    mymodel = MyModel().to(device)<br>    optimizer = AdamW(mymodel.parameters(), lr= <span class="hljs-number">5e-4</span>)<br>    criterion = nn.CrossEntropyLoss()<br>    epochs = <span class="hljs-number">10</span><br>    mymodel.train()<br>    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(epochs):<br>        start_time = time.time()<br>        total_loss, total_acc = <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>        num = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> idx, (input_ids, token_type_ids, attention_mask, labels) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(tqdm(train_loader)):<br>            labels = labels.to(device)<br>            outputs = mymodel(input_ids.to(device), token_type_ids.to(device), attention_mask.to(device))<br>            loss = criterion(outputs, labels)<br>            optimizer.zero_grad()<br>            loss.backward()<br>            optimizer.step()<br>            total_loss += loss.item()<br>            total_acc += (torch.argmax(outputs, dim= -<span class="hljs-number">1</span>) == labels).<span class="hljs-built_in">sum</span>().item()<br>            num += <span class="hljs-built_in">len</span>(labels)<br>        <br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;epoch: [<span class="hljs-subst">&#123;epoch + <span class="hljs-number">1</span>&#125;</span>/<span class="hljs-subst">&#123;epochs&#125;</span>] loss: <span class="hljs-subst">&#123;total_loss / num:<span class="hljs-number">.5</span>f&#125;</span> acc: <span class="hljs-subst">&#123;total_acc / num:<span class="hljs-number">.5</span>f&#125;</span> time: <span class="hljs-subst">&#123;time.time() - start_time:<span class="hljs-number">.5</span>f&#125;</span>s&quot;</span>)<br>    <br>        torch.save(mymodel.state_dict(), <span class="hljs-string">f&quot;./model/model<span class="hljs-subst">&#123;epoch&#125;</span>.pth&quot;</span>)<br>    <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">model_test</span>(<span class="hljs-params">test_loader</span>):<br>    mymodel = MyModel().to(device)<br>    mymodel.load_state_dict(torch.load(<span class="hljs-string">&#x27;./model/model0.pth&#x27;</span>))<br>    mymodel.<span class="hljs-built_in">eval</span>()<br>    total_acc = <span class="hljs-number">0</span><br>    num = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">with</span> torch.no_grad():<br>        <span class="hljs-keyword">for</span> idx, (input_ids, token_type_ids, attention_mask, labels) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(tqdm(test_loader)):<br>            labels = labels.to(device)<br>            outputs = mymodel(input_ids.to(device), token_type_ids.to(device), attention_mask.to(device))<br>            total_acc += (torch.argmax(outputs, dim= -<span class="hljs-number">1</span>) == labels).<span class="hljs-built_in">sum</span>().item()<br>            num += <span class="hljs-built_in">len</span>(labels)<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;准确率: <span class="hljs-subst">&#123;total_acc / num:<span class="hljs-number">.5</span>f&#125;</span>&quot;</span>)<br><br>        <br>    <br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># read_data()</span><br>    train_loader, test_loader, valid_loader = get_dataloader()<br>    <span class="hljs-comment"># train_model(train_loader)</span><br>    <span class="hljs-comment"># model_test(test_loader)</span><br>    <span class="hljs-comment"># model_test(valid_loader)</span><br></code></pre></td></tr></table></figure>
+<h1 id="bert系列模型">BERT系列模型</h1>
+<h2 id="bert">BERT</h2>
+<p>BERT是2018年10月由GoogleAI研究院提出的一种预训练模型</p>
+<ul>
+<li>BERT的全称是Bidirectional Encoder Representation from Transformers.</li>
+<li>BERT在机器阅读理解顶级水平测试SQUAD1.1中表现出惊人的成绩：全部两个衡量指标上全面超越人类，并且在11种不同NLP测试中创出SOTA表现.包括将GLUE基准推高至80.4%（绝对改进7.6%)，MultiNLI准确度达到86.7%(绝对改进5.6%)。成为NLP发展史上的里程碑式的模型成就</li>
+</ul>
+<figure>
+<img src="/img/NLP/bert.png" srcset="/img/loading.gif" lazyload alt="bert" /><figcaption aria-hidden="true">bert</figcaption>
+</figure>
+<p>Bert包含三部分：</p>
+<ul>
+<li><p><strong>黄色标记：Embedding模块</strong></p>
+<figure>
+<img src="/img/NLP/bert-embedding.png" srcset="/img/loading.gif" lazyload alt="bert-embedding" /><figcaption aria-hidden="true">bert-embedding</figcaption>
+</figure>
+<blockquote>
+<ul>
+<li>TokenEmbeddings是词嵌入张量，第一个单词是CLS标志，可以用于之后的分类任务</li>
+<li>SegmentEmbeddings是句子分段嵌入张量，是为了服务后续的两个句子为输入的预训练任务</li>
+<li>PositionEmbeddings是位置编码张量，此处注意和传统的Transformer不同，不是三角函数计算的固定位置编码，而是通过学习得出来的</li>
+<li>整个Embedding模块的输出张量就是这3个张量的直接加和结果</li>
+</ul>
+</blockquote></li>
+<li><p><strong>蓝色标记：双向Transformer模块</strong></p>
+<p>​ BERT中只使用了经典Transformer架构中的Encoder部分，完全舍弃了Decoder部分，而两大预训练任务也集中体现在训练Transformer模块中.</p></li>
+<li><p><strong>绿色标记：预微调模块</strong></p>
+<p>​ 经过中间层Transformer的处理后，BERT的最后一层根据任务的不同需求而做不同的调整即可 ​ 比如对于sequence-level的分类任务，BERT直接取第一个[CLS] token 的final hidden state，再加一层全连接层后进行softmax就可以用来预测最终的标签</p>
+<blockquote>
+<p>对于不同的任务，微调都集中在预微调模块</p>
+</blockquote>
+<p>​ <img src="/img/NLP/bert-pre.png" srcset="/img/loading.gif" lazyload alt="bert-pre" /></p>
+<blockquote>
+<p>对于 Bert 模型的超参数建议如下：</p>
+<p>Batch_size: 16 / 32</p>
+<p>Learing_rate: 5e-5, 3e-5, 2e-5</p>
+<p>Epoch: 3, 4</p>
+</blockquote></li>
+</ul>
+<h3 id="bert预训练任务">BERT预训练任务：</h3>
+<p>BERT包含两个预训练任务</p>
+<ul>
+<li><strong>Masked LM</strong>（带mask的语言训练模型）
+<ul>
+<li>关于传统的语言模型训l练,都是采用left-to-right,或者left-to-right + right-to-left结合的方式,但这种单向方式或者拼接的方式提取特征的能力有限，为此BERT提出一个深度双向表达模型(deep bidirectional representation). 即采用MASK任务来训练模型.</li>
+<li>1：在原始训练文本中，随机的抽取15%的token作为参与MASK任务的对象</li>
+<li>2：在这些被选中的token中，数据生成器并不是把它们全部变成[MASK]而是有下列3种情况
+<ul>
+<li>2.1:在80%的概率下,用[MASK]标记替换该token, 比如my dog is hairy &gt; my dog is [MASK]</li>
+<li>2.2:在10%的概率下,用一个随机的单词替换token, 比如my dog is hairy -&gt; my dog is apple</li>
+<li>2.3:在10%的概率下,保持该token不变,比如my dog is hairy &gt; my dog is hairy</li>
+</ul></li>
+<li>3：模型在训练的过程中，并不知道它将要预测哪些单词，哪些单词是原始的样子，哪些单词被遮掩成了[MASK]，哪些单词被替换成了其他单词。正是在这样一种高度不确定的情况下，反倒逼着模型快速学习该token的分布式上下文的语义，尽最大努力学习原始语言说话的样子，同时因为原始文本中只有15%的token参与了MASK操作，并不会破坏原语言的表达能力和语言规则.</li>
+</ul></li>
+<li><strong>Next Sentence Prediction</strong>（NSP任务）
+<ul>
+<li>在NLP中有一类重要的问题比如QA(Quention-Answer), NLI(Natural Language Inference), 需要模型能够很好的理解两个句子之间的关系，从而需要在模型的训练中引入对应的任务，在BERT中引入的就是NextSentencePrediction任务。采用的方式是输入句子对(A,B)模型来预测句子B是不是句子A的真实的下一句话。</li>
+<li>1：所有参与任务训练的语句都被选中作为句子A
+<ul>
+<li>1.1：其中50%的B是原始文本中真实跟随A的下一句话(标记为IsNext,代表正样本)</li>
+<li>1.2：其中50%的B是原始文本中随机抽取的一句话(标记为NotNext,代表负样本)</li>
+</ul></li>
+<li>2：在该任务上，BERT模型可以在测试集上取得97%-98%的准确率。</li>
+</ul></li>
+</ul>
+<h3 id="在mlm任务中采用-80-10-10-分布的原因">在MLM任务中采用 80% 10% 10% 分布的原因</h3>
+<ul>
+<li>首先,如果所有参与训练的token被100%的[MASK],那么在fine-tunning的时候所有单词都是已知的，不存在[MASK]，那么模型就只能根据其他token的信息和语序结构来预测当前词，而无法利用到这个词本身的信息，因为它们从未出现在训练过程中，等于模型从未接触到它们的信息，等于整个语义空间损失了部分信息，采用80%的概率下应用[MASK]既可以让模型去学着预测这些单词，又以20%的概率保留了语义信息展示给模型</li>
+<li>保留下来的信息如果全部使用原始token，那么模型在预训练的时候可能会偷懒，直接照抄当前token信息。采用10%概率下randomtoken来随机替换当前token,会让模型不能去死记硬背当前的token，而去尽力学习单词周边的语义表达和远距离的信息依赖，尝试建模完整的语言信息</li>
+<li>最后再以10%的概率保留原始的token，意义就是保留语言本来的面貌，让信息不至于完全被遮掩，使得模型可以“看清”真实的语言面貌</li>
+</ul>
+<h3 id="处理长文本的方法">处理长文本的方法</h3>
+<p>首选要明确一点，BERT预训l练模型所接收的最大sequence长度是512。那么对于长文本（文本长度超过512的句子），就需要特殊的方式来构造训练样本。核心就是如何进行截断</p>
+<ul>
+<li>head-only方式：这是只保留长文本头部信息的截断方式，具体为保存前510个token(要留两个位置给[CLS]和[SEP]).</li>
+<li>tail-only方式：这是只保留长文本尾部信息的截断方式，具体为保存最后510个token(要留两个位置给[CLS]和[SEP]).</li>
+<li>head+only方式：选择前128个token和最后382个token(文本总长度在800以内)，或者前256个token和最后254个token(文本总长度大于800).</li>
+</ul>
+<h2 id="albert">ALBERT</h2>
+<p>AIBERT模型发布于ICLR 2020会议,是基于BERT模型的重要改进版本.是谷歌研究院和芝加哥大学共同发布的研究成果。</p>
+<p>论文全称&lt;&lt; A Lite BERT For Self-Supervised Learning Of Language Representations &gt;&gt;.</p>
+<p>从模型架构上看，AIBERT和BERT基本一致，核心模块都是基于Transformer的强大特征提取能力.</p>
+<p>相比较于BERT模型,AIBERT的出发点即是希望降低预训练的难度,同时提升模型关键能力. 主要引入了5大优化:</p>
+<ul>
+<li>第一：词嵌入参数的因式分解</li>
+<li>第二：隐藏层之间的参数共享</li>
+<li>第三：去掉NSP增加SOP预训练任务</li>
+<li>第四：去掉dropout操作</li>
+<li>第五：MLM任务的优化</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/nlp/" class="print-no-link">#nlp</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nlp (下)</div>
+      <div>http://example.com/2025/12/16/nlp-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Suzuran</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年12月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/11/nlp-1/" title="nlp (上)">
+                        <span class="hidden-mobile">nlp (上)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Suzuran28/Suzuran28.github.io","repo-id":"R_kgDOQT-_cQ","category":"Announcements","category-id":"DIC_kwDOQT-_cc4Cx3e2","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN","theme":"preferred_color_scheme"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
