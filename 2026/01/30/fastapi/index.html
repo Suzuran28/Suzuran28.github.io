@@ -27,7 +27,7 @@
 <meta property="og:description" content="FastApi 总结 前言&amp;依赖 官方文档：https:&#x2F;&#x2F;fastapi.org.cn&#x2F;learn&#x2F; 在编写路由的时候请参考 Api规范 依赖： 12python 3.10+pip install fastapi, sqlalchemy[asyncio], aiomysql, uvicorn 项目构成 一个完整的项目应有以下配置 123456789101112131415">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-30T15:43:32.000Z">
-<meta property="article:modified_time" content="2026-01-30T15:52:25.469Z">
+<meta property="article:modified_time" content="2026-01-30T15:55:28.534Z">
 <meta property="article:author" content="Suzuran">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="fastapi">
@@ -312,7 +312,7 @@
 <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs nix">Project<span class="hljs-symbol">/</span><br>|├── config<span class="hljs-symbol">/</span>			<span class="hljs-comment"># 配置存放文件夹</span><br><span class="hljs-operator">||</span>├── db_config.py		<span class="hljs-comment"># 数据库相关配置文件</span><br><span class="hljs-operator">||</span>└── ...<br>|├── crud<span class="hljs-symbol">/</span>				<span class="hljs-comment"># 存放操控数据库代码文件(增删改查)</span><br><span class="hljs-operator">||</span>└── ...<br>|├── models<span class="hljs-symbol">/</span>			<span class="hljs-comment"># ORM 模型</span><br><span class="hljs-operator">||</span>└── ...<br>|├── routers<span class="hljs-symbol">/</span>			<span class="hljs-comment"># 存放路由相关</span><br><span class="hljs-operator">||</span>└── ...<br>|├── schemas<span class="hljs-symbol">/</span>			<span class="hljs-comment"># pydantic 模型类</span><br><span class="hljs-operator">||</span>└── ...<br>|├── utils<span class="hljs-symbol">/</span> 			<span class="hljs-comment"># 工具类</span><br><span class="hljs-operator">||</span>└── ...<br>└── main.py 			<span class="hljs-comment"># 主程序入口</span><br></code></pre></td></tr></table></figure>
 <p>确保各功能各司其职是完成一个项目的关键，同时模块化处理能够便于项目管理与优化</p>
 <p><strong>项目开发时应遵循</strong>：</p>
-<p>​ 阅读了解 API 规范 -&gt; 创建路由 -&gt; 根据路由创建pydantic模型(可选) -&gt; 确认实现逻辑 创建对应的 ORM 模型 完成crud操作 完善路由 在交互式文档或前端页面调用api查看是否正常工作 修复bug/投入使用</p>
+<p>​ 阅读了解 API 规范 <span class="math inline">→</span> 创建路由 <span class="math inline">→</span> 根据路由创建pydantic模型(可选) <span class="math inline">→</span> 确认实现逻辑 <span class="math inline">→</span> 创建对应的 ORM 模型 <span class="math inline">→</span> 完成crud操作 <span class="math inline">→</span> 完善路由 <span class="math inline">→</span> 在交互式文档或前端页面调用api查看是否正常工作 <span class="math inline">→</span> 修复bug/投入使用</p>
 <p><strong>遇见bug处理方式</strong>:</p>
 <ul>
 <li><p>检查是否挂载路由</p></li>
